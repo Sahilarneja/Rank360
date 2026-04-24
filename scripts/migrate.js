@@ -16,15 +16,16 @@ if (fs.existsSync(envPath)) {
     });
 }
 
-const { neon } = require("@neondatabase/serverless");
-const sql = neon(process.env.DATABASE_URL);
+const { Client } = require("pg");
+const client = new Client({ connectionString: process.env.DATABASE_URL });
 
 // Parameterized query helper
 async function q(text, params = []) {
-  return sql(text, params);
+  return client.query(text, params);
 }
 
 async function migrate() {
+  await client.connect();
   try {
     console.log("Running migrations...\n");
 
@@ -238,6 +239,8 @@ async function migrate() {
   } catch (err) {
     console.error("Migration failed:", err.message);
     process.exit(1);
+  } finally {
+    await client.end();
   }
 }
 
