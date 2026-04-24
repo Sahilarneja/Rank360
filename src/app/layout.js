@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
-import AdSenseScript from "@/components/ads/AdSenseScript";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/utils";
 
 const inter = Inter({
@@ -68,11 +67,21 @@ export const viewport = {
 };
 
 export default function RootLayout({ children }) {
+  const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID;
+
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        {adsenseId && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
+            crossOrigin="anonymous"
+          />
+        )}
+      </head>
       <body className="min-h-screen flex flex-col bg-white">
         <GoogleAnalytics />
-        <AdSenseScript />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
