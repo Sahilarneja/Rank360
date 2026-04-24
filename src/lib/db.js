@@ -19,7 +19,7 @@ async function getQuery() {
     neonConfig.fetchConnectionCache = true;
     const sql = neon(process.env.DATABASE_URL);
     _query = async (text, params = []) => {
-      const rows = await sql(text, params);
+      const rows = await sql.query(text, params);
       return { rows };
     };
   } else {
