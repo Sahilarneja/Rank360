@@ -37,14 +37,13 @@ function detectCategory(title, description = "") {
 
 // ── Slug generator ─────────────────────────────────────────────
 function makeSlug(text) {
-  const base = text
+  return text
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
     .slice(0, 200)
     .replace(/^-|-$/g, "");
-  return `${base}-${Date.now().toString(36)}`;
 }
 
 // ── RSS fetch ──────────────────────────────────────────────────

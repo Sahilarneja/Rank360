@@ -62,11 +62,6 @@ function slugify(text) {
     .replace(/^-|-$/g, "");
 }
 
-function uniqueSlug(base) {
-  const ts = Date.now().toString(36);
-  return `${base}-${ts}`;
-}
-
 // ── HTTP fetch ─────────────────────────────────────────────────
 function fetchUrl(url) {
   return new Promise((resolve, reject) => {
@@ -172,8 +167,7 @@ async function runPipeline() {
 
       for (const item of items.slice(0, 20)) {
         const category = detectCategory(item.title, item.description);
-        const baseSlug = slugify(item.title);
-        const slug = uniqueSlug(baseSlug);
+        const slug = slugify(item.title);
         const summary = item.description
           ? item.description.replace(/<[^>]+>/g, "").slice(0, 300)
           : item.title;
