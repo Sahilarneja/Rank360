@@ -2,7 +2,12 @@ import { getAllSlugs } from "@/lib/articles";
 import { SITE_URL, CATEGORIES } from "@/lib/utils";
 
 export default async function sitemap() {
-  const slugs = await getAllSlugs();
+  let slugs = [];
+  try {
+    slugs = await getAllSlugs();
+  } catch {
+    // DB unreachable (e.g. local dev without DB access) — return static URLs only
+  }
 
   const articleUrls = slugs.map((s) => ({
     url: `${SITE_URL}/news/${s.slug}`,
