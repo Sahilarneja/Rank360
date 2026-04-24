@@ -191,7 +191,7 @@ async function runPipeline() {
               summary,
               content,
               category,
-              item.image_url || null,
+              null, // never use scraped images — copyright risk
               publishedAt,
               JSON.stringify(tags),
               JSON.stringify(seoMeta),
