@@ -70,11 +70,9 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={inter.variable}>
-      <head>
-        <AdSenseScript />
-      </head>
       <body className="min-h-screen flex flex-col bg-white">
         <GoogleAnalytics />
+        <AdSenseScript />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
