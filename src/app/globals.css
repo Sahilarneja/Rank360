@@ -2,13 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Google Fonts loaded via next/font in layout.js — NOT here */
-/* Removing @import to eliminate render-blocking font request */
-
 @layer base {
   :root {
-    --font-inter: "Inter", system-ui, -apple-system, sans-serif;
-    --font-merriweather: "Merriweather", Georgia, serif;
+    --font-inter: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-merriweather: ui-serif, Georgia, Cambria, "Times New Roman", serif;
     --header-height: 60px;
   }
 
@@ -41,7 +38,6 @@
     letter-spacing: -0.02em;
   }
 }
-
 @layer components {
 
   /* ── Article body ─────────────────────────────────────────── */
@@ -101,6 +97,8 @@
   /* ── Ticker ───────────────────────────────────────────────── */
   .ticker-track {
     @apply flex whitespace-nowrap animate-ticker;
+    will-change: transform;
+    contain: layout style;
   }
 
   /* ── Ad placeholder ───────────────────────────────────────── */
@@ -108,6 +106,8 @@
     @apply bg-[#F3F4F6] border border-dashed border-[#D1D5DB] rounded-news
            flex items-center justify-center text-xs text-brand-muted font-medium;
     min-height: 90px;
+    /* Reserve space to prevent CLS when ads load */
+    contain: layout;
   }
 
   /* ── Section heading ──────────────────────────────────────── */
@@ -169,4 +169,10 @@
     scrollbar-width: none;
   }
   .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+  /* Defer rendering of below-fold sections — big paint savings */
+  .content-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 0 400px;
+  }
 }

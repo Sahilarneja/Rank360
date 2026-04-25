@@ -70,7 +70,7 @@ export default function Header() {
               {NAV_LINKS.map((link) => {
                 const active =
                   pathname === link.href ||
-                  (link.href !== "/news" && pathname + "" === link.href);
+                  (link.href !== "/" && pathname.startsWith(`${link.href}/`));
                 return (
                   <Link
                     key={link.href}

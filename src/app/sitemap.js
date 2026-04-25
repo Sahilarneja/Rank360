@@ -1,5 +1,6 @@
 import { getAllSlugs } from "@/lib/articles";
 import { SITE_URL, CATEGORIES } from "@/lib/utils";
+import { EXAM_HUBS, EVERGREEN_GUIDES } from "@/lib/growth";
 
 export default async function sitemap() {
   let slugs = [];
@@ -23,6 +24,36 @@ export default async function sitemap() {
     priority: 0.7,
   }));
 
+  const examHubUrls = [
+    {
+      url: `${SITE_URL}/exams`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.85,
+    },
+    ...EXAM_HUBS.map((hub) => ({
+      url: `${SITE_URL}${hub.href}`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.8,
+    })),
+  ];
+
+  const guideUrls = [
+    {
+      url: `${SITE_URL}/guides`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    ...EVERGREEN_GUIDES.map((guide) => ({
+      url: `${SITE_URL}/guides/${guide.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.75,
+    })),
+  ];
+
   return [
     {
       url: SITE_URL,
@@ -37,6 +68,8 @@ export default async function sitemap() {
       priority: 0.8,
     },
     ...categoryUrls,
+    ...examHubUrls,
+    ...guideUrls,
     ...articleUrls,
   ];
 }

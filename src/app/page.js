@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import {
   getHeroArticles,
   getLatestArticles,
@@ -7,11 +6,15 @@ import {
   getHomepageInsights,
 } from "@/lib/articles";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/utils";
+import { EXAM_HUBS, EVERGREEN_GUIDES } from "@/lib/growth";
 import LiveTicker from "@/components/ui/LiveTicker";
 import HeroSection from "@/components/home/HeroSection";
 import CategoryStrip from "@/components/home/CategoryStrip";
 import LatestGrid from "@/components/home/LatestGrid";
 import InsightSection from "@/components/home/InsightSection";
+import TopicHubGrid from "@/components/home/TopicHubGrid";
+import EvergreenGuideGrid from "@/components/home/EvergreenGuideGrid";
+import AudienceSignup from "@/components/ui/AudienceSignup";
 import AdUnit from "@/components/ads/AdUnit";
 
 export const revalidate = 300; // ISR: revalidate every 5 min
@@ -66,13 +69,27 @@ export default async function HomePage() {
         {/* Latest news grid */}
         <LatestGrid articles={latestArticles} />
 
+        <div className="content-auto">
+          <TopicHubGrid hubs={EXAM_HUBS} />
+        </div>
+
         {/* Ad – mid page */}
-        <div className="my-6">
+        <div className="my-6 content-auto">
           <AdUnit slot="0987654321" format="rectangle" className="ad-slot w-full max-w-xl mx-auto" />
         </div>
 
+        <div className="content-auto">
+          <EvergreenGuideGrid guides={EVERGREEN_GUIDES.slice(0, 4)} />
+        </div>
+
         {/* Student insights */}
-        <InsightSection articles={insightArticles} insights={insights} />
+        <div className="content-auto">
+          <InsightSection articles={insightArticles} insights={insights} />
+        </div>
+
+        <div className="content-auto">
+          <AudienceSignup />
+        </div>
       </div>
     </>
   );

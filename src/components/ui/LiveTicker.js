@@ -11,7 +11,7 @@ const TYPE_COLORS = {
 export default function LiveTicker({ updates = [] }) {
   if (!updates.length) return null;
 
-  // Duplicate for seamless loop
+  // Duplicate items for seamless CSS loop — kept minimal (2x is the minimum needed)
   const items = [...updates, ...updates];
 
   return (
@@ -27,11 +27,12 @@ export default function LiveTicker({ updates = [] }) {
 
         {/* Scrolling track */}
         <div className="flex-1 overflow-hidden relative">
-          {/* Fade edges */}
+          {/* Fade edges — use pointer-events-none so they don't block clicks */}
           <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#0A0A0A] to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#0A0A0A] to-transparent z-10 pointer-events-none" />
 
-          <div className="ticker-track py-2.5">
+          {/* will-change: transform promotes to GPU layer for smooth animation */}
+          <div className="ticker-track py-2.5" style={{ willChange: "transform" }}>
             {items.map((update, i) => {
               const link = update.data?.link;
               const typeColor = TYPE_COLORS[update.type] || TYPE_COLORS.news;

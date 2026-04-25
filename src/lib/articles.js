@@ -27,7 +27,11 @@ export async function getArticles({
   }
 
   const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
+  // Save filter params count before adding limit/offset
+  const filterParams = [...params];
   params.push(limit, offset);
+  const limitIdx = params.length - 1;
+  const offsetIdx = params.length;
 
   const [rows, countResult] = await Promise.all([
     query(
@@ -35,12 +39,12 @@ export async function getArticles({
               source_name, reading_time_minutes, ai_refined
        FROM articles ${where}
        ORDER BY published_at DESC
-       LIMIT $${params.length - 1} OFFSET $${params.length}`,
+       LIMIT $${limitIdx} OFFSET $${offsetIdx}`,
       params
     ),
     query(
       `SELECT COUNT(*) FROM articles ${where}`,
-      params.slice(0, params.length - 2)
+      filterParams
     ),
   ]);
 
@@ -98,29 +102,30 @@ export async function getArticlesByCategory(category, limit = 4) {
 }
 
 export async function getRelatedArticles(category, excludeSlug, limit = 4) {
-  const byCat = await query(
-    `SELECT id, title, slug, summary, category, image_url, published_at,
-            source_name, reading_time_minutes, ai_refined
-     FROM articles WHERE category = $1 AND slug != $2
-     ORDER BY published_at DESC LIMIT $3`,
+  // Single query: prefer same category, fill remainder with latest from other categories
+  const result = await query(
+    `(
+       SELECT id, title, slug, summary, category, image_url, published_at,
+              source_name, reading_time_minutes, ai_refined, 1 AS priority
+       FROM articles
+       WHERE category = $1 AND slug != $2
+       ORDER BY published_at DESC
+       LIMIT $3
+     )
+     UNION ALL
+     (
+       SELECT id, title, slug, summary, category, image_url, published_at,
+              source_name, reading_time_minutes, ai_refined, 2 AS priority
+       FROM articles
+       WHERE category != $1 AND slug != $2
+       ORDER BY published_at DESC
+       LIMIT $3
+     )
+     ORDER BY priority ASC, published_at DESC
+     LIMIT $3`,
     [category, excludeSlug, limit]
   );
-
-  if (byCat.rows.length >= limit) return byCat.rows;
-
-  const needed = limit - byCat.rows.length;
-  const existingSlugs = [excludeSlug, ...byCat.rows.map((r) => r.slug)];
-  const placeholders = existingSlugs.map((_, i) => `$${i + 1}`).join(",");
-
-  const extra = await query(
-    `SELECT id, title, slug, summary, category, image_url, published_at,
-            source_name, reading_time_minutes, ai_refined
-     FROM articles WHERE slug NOT IN (${placeholders})
-     ORDER BY published_at DESC LIMIT $${existingSlugs.length + 1}`,
-    [...existingSlugs, needed]
-  );
-
-  return [...byCat.rows, ...extra.rows];
+  return result.rows;
 }
 
 export async function getAllSlugs() {

@@ -3,10 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { getArticleBySlug, getRelatedArticles, getAllSlugs } from "@/lib/articles";
 import { buildSeoMeta, buildJsonLd, formatFullDate, formatDate, getArticleImageUrl, SITE_URL, SITE_NAME } from "@/lib/utils";
+import { getExamHubByCategory, getGuidesByCategory } from "@/lib/growth";
 import CategoryBadge from "@/components/ui/CategoryBadge";
 import ArticleCard from "@/components/ui/ArticleCard";
 import AdUnit from "@/components/ads/AdUnit";
 import SectionHeading from "@/components/ui/SectionHeading";
+import AudienceSignup from "@/components/ui/AudienceSignup";
+import TrustPanel from "@/components/ui/TrustPanel";
 
 export const revalidate = 3600;
 
@@ -73,9 +76,8 @@ export default async function ArticlePage({ params }) {
 
   const jsonLd = buildJsonLd(article, SITE_URL);
   const displayImageUrl = getArticleImageUrl(article);
-
-  // Extract "what it means" section from content if present
-  const hasInsight = article.content?.toLowerCase().includes("what it means");
+  const hub = getExamHubByCategory(article.category);
+  const relatedGuides = getGuidesByCategory(article.category, { limit: 2 });
 
   return (
     <>
@@ -155,6 +157,7 @@ export default async function ArticlePage({ params }) {
                 height={630}
                 className="w-full object-cover"
                 priority
+                fetchPriority="high"
                 sizes="(max-width: 1024px) 100vw, 66vw"
               />
             </figure>
@@ -170,6 +173,10 @@ export default async function ArticlePage({ params }) {
               itemProp="articleBody"
               dangerouslySetInnerHTML={{ __html: article.content || "" }}
             />
+
+            <div className="mt-8">
+              <TrustPanel article={article} />
+            </div>
 
             {article.external_url && (
               <div className="mt-6 rounded-news border border-brand-border bg-brand-light p-4">
@@ -207,6 +214,30 @@ export default async function ArticlePage({ params }) {
               </section>
             )}
 
+            {hub && (
+              <section className="mt-8 rounded-news-lg border border-brand-border bg-white p-5">
+                <SectionHeading>Keep Going</SectionHeading>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <Link
+                    href={hub.href}
+                    className="rounded-news border border-brand-border bg-brand-light p-4 hover:shadow-card transition-shadow"
+                  >
+                    <h2 className="text-[16px] font-black text-[#111111] mb-1">{hub.title}</h2>
+                    <p className="text-sm text-brand-muted leading-relaxed">{hub.description}</p>
+                  </Link>
+                  {relatedGuides[0] && (
+                    <Link
+                      href={`/guides/${relatedGuides[0].slug}`}
+                      className="rounded-news border border-brand-border bg-brand-light p-4 hover:shadow-card transition-shadow"
+                    >
+                      <h2 className="text-[16px] font-black text-[#111111] mb-1">{relatedGuides[0].title}</h2>
+                      <p className="text-sm text-brand-muted leading-relaxed">{relatedGuides[0].summary}</p>
+                    </Link>
+                  )}
+                </div>
+              </section>
+            )}
+
             {/* Tags */}
             {article.tags?.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-8 pt-6 border-t border-brand-border">
@@ -227,6 +258,10 @@ export default async function ArticlePage({ params }) {
             {/* Share */}
             <ShareBar title={article.title} slug={slug} />
 
+            <div className="mt-8">
+              <AudienceSignup compact />
+            </div>
+
             {/* Ad – end of article */}
             <div className="mt-8">
               <AdUnit slot="4455667788" className="ad-slot w-full" />
@@ -243,6 +278,24 @@ export default async function ArticlePage({ params }) {
                 <div className="space-y-0">
                   {related.map((rel) => (
                     <ArticleCard key={rel.id} article={rel} variant="horizontal" />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {relatedGuides.length > 0 && (
+              <div className="bg-white rounded-news-lg shadow-card p-5">
+                <SectionHeading>Evergreen Guides</SectionHeading>
+                <div className="space-y-4">
+                  {relatedGuides.map((guide) => (
+                    <Link key={guide.slug} href={`/guides/${guide.slug}`} className="block group">
+                      <h2 className="text-[15px] font-bold text-[#111111] group-hover:text-brand-blue transition-colors">
+                        {guide.title}
+                      </h2>
+                      <p className="text-sm text-brand-muted leading-relaxed mt-1">
+                        {guide.summary}
+                      </p>
+                    </Link>
                   ))}
                 </div>
               </div>

@@ -263,10 +263,10 @@ export const SITE_DESCRIPTION =
 export const CATEGORIES = ["jee", "neet", "cuet", "admissions", "results", "news"];
 
 export const NAV_LINKS = [
-  { label: "JEE", href: "/news?category=jee" },
-  { label: "NEET", href: "/news?category=neet" },
-  { label: "CUET", href: "/news?category=cuet" },
-  { label: "Admissions", href: "/news?category=admissions" },
-  { label: "Results", href: "/news?category=results" },
+  { label: "Exam Hubs", href: "/exams" },
+  { label: "Guides", href: "/guides" },
+  { label: "JEE", href: "/exams/jee" },
+  { label: "NEET", href: "/exams/neet" },
+  { label: "CUET", href: "/exams/cuet" },
   { label: "All News", href: "/news" },
 ];

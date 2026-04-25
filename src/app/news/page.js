@@ -5,6 +5,7 @@ import ArticleCard from "@/components/ui/ArticleCard";
 import CategoryFilter from "@/components/ui/CategoryFilter";
 import Pagination from "@/components/ui/Pagination";
 import AdUnit from "@/components/ads/AdUnit";
+import AudienceSignup from "@/components/ui/AudienceSignup";
 
 export const revalidate = 120;
 
@@ -108,6 +109,10 @@ export default async function NewsPage({ searchParams }) {
           <Suspense>
             <Pagination currentPage={currentPage} totalPages={totalPages} />
           </Suspense>
+
+          <div className="mt-8">
+            <AudienceSignup compact />
+          </div>
         </>
       ) : (
         <div className="text-center py-20">

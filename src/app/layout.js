@@ -1,28 +1,9 @@
 import "./globals.css";
-import { Inter, Merriweather } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
+import AdSenseScript from "@/components/ads/AdSenseScript";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, buildSiteSchema } from "@/lib/utils";
-
-// Inter — UI font, loaded for all pages
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-  preload: true,
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
-
-// Merriweather — article body font, loaded non-blocking
-const merriweather = Merriweather({
-  subsets: ["latin"],
-  variable: "--font-merriweather",
-  display: "swap",
-  preload: false, // only needed on article pages
-  weight: ["400", "700"],
-  style: ["normal", "italic"],
-});
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
@@ -79,32 +60,27 @@ export const viewport = {
 };
 
 export default function RootLayout({ children }) {
-  const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID;
   const siteSchema = buildSiteSchema(SITE_URL);
 
   return (
-    <html lang="en" className={`${inter.variable} ${merriweather.variable}`}>
+    <html lang="en">
       <head>
         {/* Preconnect to critical third-party origins */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         {/* Site-level schema: Organization + WebSite + SearchAction */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }}
         />
-        {adsenseId && (
-          <script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
-            crossOrigin="anonymous"
-          />
-        )}
       </head>
       <body className="min-h-screen flex flex-col bg-white">
         <GoogleAnalytics />
+        <AdSenseScript />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
