@@ -97,13 +97,13 @@ export default function ArticleCard({
 
       {/* Body */}
       <div className="p-4 flex flex-col flex-1 gap-2">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <CategoryBadge category={category} />
-          <time className="text-2xs text-brand-muted" dateTime={published_at}>
+          <time className="text-2xs text-brand-muted shrink-0" dateTime={published_at}>
             {formatRelativeTime(published_at)}
           </time>
           {source_name && (
-            <span className="text-2xs text-brand-muted">
+            <span className="text-2xs text-brand-muted truncate max-w-[120px]">
               {source_name}
             </span>
           )}

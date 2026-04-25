@@ -83,6 +83,25 @@ export const EXAM_HUBS = [
       "Good fit for AdSense-safe informational traffic",
     ],
   },
+  {
+    category: "results",
+    href: "/exams/results",
+    title: "Results Hub",
+    kicker: "Scorecards, answer keys, and rank lists",
+    description:
+      "Every JEE, NEET, CUET, and board result in one place — scorecards, answer keys, rank lists, cutoffs, and what to do the moment results drop.",
+    searchTopics: [
+      "JEE Main result 2026",
+      "NEET result scorecard download",
+      "CUET result date",
+      "NTA answer key challenge",
+    ],
+    trustPoints: [
+      "Covers the highest-traffic moments in the exam calendar",
+      "Links scorecard downloads to next counselling steps",
+      "Designed for repeat visits during result and answer key season",
+    ],
+  },
 ];
 
 export const EVERGREEN_GUIDES = [

@@ -18,7 +18,7 @@ export async function generateMetadata({ searchParams }) {
   const title = search
     ? `Search: "${search}" | ${SITE_NAME}`
     : catLabel
-    ? `${catLabel} News 2024 – Latest Updates | ${SITE_NAME}`
+    ? `${catLabel} News ${new Date().getFullYear()} – Latest Updates | ${SITE_NAME}`
     : `Education News – JEE, NEET, CUET, Admissions | ${SITE_NAME}`;
 
   const description = catLabel

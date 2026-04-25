@@ -1,26 +1,31 @@
 import Link from "next/link";
 import { SITE_NAME, SITE_DESCRIPTION } from "@/lib/utils";
-import { AUDIENCE_CHANNELS } from "@/lib/growth";
+import { AUDIENCE_CHANNELS, EVERGREEN_GUIDES } from "@/lib/growth";
+
+// Build guide links dynamically from growth.js so footer stays in sync automatically
+const GUIDE_LINKS = EVERGREEN_GUIDES.map((g) => ({
+  label: g.title.replace(/ —.*$/, "").replace(/ Guide$/, "").trim(),
+  href: `/guides/${g.slug}`,
+}));
 
 const FOOTER_COLS = [
   {
-    heading: "Exams",
+    heading: "Exam Hubs",
     links: [
       { label: "JEE Hub", href: "/exams/jee" },
       { label: "NEET Hub", href: "/exams/neet" },
       { label: "CUET Hub", href: "/exams/cuet" },
       { label: "Admissions Hub", href: "/exams/admissions" },
-      { label: "All Exam Hubs", href: "/exams" },
+      { label: "Results Hub", href: "/exams/results" },
+      { label: "All Hubs", href: "/exams" },
     ],
   },
   {
-    heading: "Guides",
+    heading: "Top Guides",
+    // Show first 6 guides — "All Guides" links to the full list
     links: [
-      { label: "JEE Exam Date Guide", href: "/guides/jee-main-2026-exam-date-guide" },
-      { label: "NEET Counselling Guide", href: "/guides/neet-2026-counselling-guide" },
-      { label: "CUET Guide", href: "/guides/cuet-2026-syllabus-and-admission-guide" },
-      { label: "JoSAA Cutoff Guide", href: "/guides/josaa-round-wise-cutoff-guide" },
-      { label: "All Guides", href: "/guides" },
+      ...GUIDE_LINKS.slice(0, 6),
+      { label: "All Guides →", href: "/guides" },
     ],
   },
   {
@@ -28,6 +33,9 @@ const FOOTER_COLS = [
     links: [
       { label: "Home", href: "/" },
       { label: "All News", href: "/news" },
+      { label: "JEE News", href: "/news?category=jee" },
+      { label: "NEET News", href: "/news?category=neet" },
+      { label: "Results", href: "/news?category=results" },
       { label: "Sitemap", href: "/sitemap.xml" },
       { label: "Privacy Policy", href: "/privacy" },
       { label: "Terms of Use", href: "/terms" },

@@ -2,6 +2,8 @@ import { getAllSlugs } from "@/lib/articles";
 import { SITE_URL, CATEGORIES } from "@/lib/utils";
 import { EXAM_HUBS, EVERGREEN_GUIDES } from "@/lib/growth";
 
+export const revalidate = 300; // regenerate every 5 min so new articles appear quickly
+
 export default async function sitemap() {
   let slugs = [];
   try {
@@ -12,16 +14,17 @@ export default async function sitemap() {
 
   const articleUrls = slugs.map((s) => ({
     url: `${SITE_URL}/news/${s.slug}`,
-    lastModified: s.updated_at || new Date(),
+    lastModified: s.updated_at || s.published_at || new Date(),
     changeFrequency: "daily",
     priority: 0.9,
   }));
 
+  // Category filter pages — high crawl frequency, Google indexes these for category searches
   const categoryUrls = CATEGORIES.map((cat) => ({
     url: `${SITE_URL}/news?category=${cat}`,
     lastModified: new Date(),
     changeFrequency: "hourly",
-    priority: 0.7,
+    priority: 0.75,
   }));
 
   const examHubUrls = [
@@ -65,7 +68,7 @@ export default async function sitemap() {
       url: `${SITE_URL}/news`,
       lastModified: new Date(),
       changeFrequency: "hourly",
-      priority: 0.8,
+      priority: 0.85,
     },
     ...categoryUrls,
     ...examHubUrls,

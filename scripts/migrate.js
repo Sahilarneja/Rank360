@@ -92,6 +92,11 @@ async function run() {
     await client.query(`CREATE INDEX IF NOT EXISTS idx_articles_faq ON articles USING GIN(faq)`);
     await client.query(`CREATE INDEX IF NOT EXISTS idx_articles_ai_data ON articles USING GIN(ai_data)`);
     await client.query(`CREATE INDEX IF NOT EXISTS idx_live_updates_created ON live_updates(created_at DESC)`);
+    // Full-text search index — makes /news?search= fast at scale
+    await client.query(`
+      CREATE INDEX IF NOT EXISTS idx_articles_fts ON articles
+        USING GIN(to_tsvector('english', title || ' ' || COALESCE(summary, '')))
+    `);
 
     const categories = [
       ["JEE", "jee", "JEE Main and Advanced news, results, cutoffs"],

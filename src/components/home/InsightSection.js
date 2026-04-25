@@ -31,26 +31,26 @@ export default function InsightSection({ articles = [], insights = [] }) {
             <Link
               key={item.title}
               href={item.href}
-              className={`rounded-news-lg border p-5 block hover:shadow-card transition-shadow ${item.color}`}
+              className={`rounded-news-lg border p-5 block hover:shadow-card transition-shadow min-w-0 overflow-hidden ${item.color}`}
             >
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-sm font-black tracking-wide">{item.icon}</span>
-                <h3 className={`text-[14px] font-bold ${item.textColor}`}>{item.title}</h3>
+              <div className="flex items-center gap-2 mb-2 min-w-0">
+                <span className="text-sm font-black tracking-wide flex-shrink-0">{item.icon}</span>
+                <h3 className={`text-[14px] font-bold line-clamp-2 min-w-0 ${item.textColor}`}>{item.title}</h3>
               </div>
-              <p className={`text-[13px] leading-relaxed ${item.textColor} opacity-90`}>
+              <p className={`text-[13px] leading-relaxed line-clamp-3 ${item.textColor} opacity-90`}>
                 {item.body}
               </p>
             </Link>
           ) : (
             <div
             key={item.title}
-            className={`rounded-news-lg border p-5 ${item.color}`}
+            className={`rounded-news-lg border p-5 min-w-0 overflow-hidden ${item.color}`}
           >
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-xl">{item.icon}</span>
-              <h3 className={`text-[14px] font-bold ${item.textColor}`}>{item.title}</h3>
+            <div className="flex items-center gap-2 mb-2 min-w-0">
+              <span className="text-xl flex-shrink-0">{item.icon}</span>
+              <h3 className={`text-[14px] font-bold line-clamp-2 min-w-0 ${item.textColor}`}>{item.title}</h3>
             </div>
-            <p className={`text-[13px] leading-relaxed ${item.textColor} opacity-90`}>
+            <p className={`text-[13px] leading-relaxed line-clamp-3 ${item.textColor} opacity-90`}>
               {item.body}
             </p>
           </div>
