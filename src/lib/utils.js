@@ -103,7 +103,9 @@ export function buildSeoMeta(article) {
 }
 
 export function buildJsonLd(article, siteUrl) {
-  return {
+  const catLabel = getCategoryLabel(article.category);
+
+  const newsArticle = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
     headline: article.title,
@@ -113,6 +115,9 @@ export function buildJsonLd(article, siteUrl) {
       : [`${siteUrl}/og-default.jpg`],
     datePublished: article.published_at,
     dateModified: article.updated_at || article.published_at,
+    articleSection: catLabel,
+    keywords: Array.isArray(article.tags) ? article.tags.join(", ") : "",
+    inLanguage: "en-IN",
     author: {
       "@type": "Organization",
       name: "Rank360",
@@ -121,16 +126,120 @@ export function buildJsonLd(article, siteUrl) {
     publisher: {
       "@type": "Organization",
       name: "Rank360",
+      url: siteUrl,
       logo: {
         "@type": "ImageObject",
         url: `${siteUrl}/logo.png`,
+        width: 200,
+        height: 60,
       },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": `${siteUrl}/news/${article.slug}`,
     },
+    isAccessibleForFree: true,
+    isPartOf: {
+      "@type": "WebSite",
+      name: "Rank360",
+      url: siteUrl,
+    },
   };
+
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: siteUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "News",
+        item: `${siteUrl}/news`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: catLabel,
+        item: `${siteUrl}/news?category=${article.category}`,
+      },
+      {
+        "@type": "ListItem",
+        position: 4,
+        name: article.title,
+        item: `${siteUrl}/news/${article.slug}`,
+      },
+    ],
+  };
+
+  const faqItems = (article.faq || []).map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer,
+    },
+  }));
+
+  const schemas = [newsArticle, breadcrumb];
+
+  if (faqItems.length) {
+    schemas.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: faqItems,
+    });
+  }
+
+  return schemas;
+}
+
+// ── Site-level schema (injected in root layout) ────────────────
+export function buildSiteSchema(siteUrl) {
+  return [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: "Rank360",
+      url: siteUrl,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteUrl}/logo.png`,
+        width: 200,
+        height: 60,
+      },
+      description:
+        "Rank360 covers JEE, NEET, CUET results, cutoffs, admissions, and college news — fast, accurate, student-first.",
+      sameAs: [
+        "https://twitter.com/rank360in",
+        "https://t.me/rank360in",
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      name: "Rank360",
+      url: siteUrl,
+      description: "India's Fastest Education News",
+      inLanguage: "en-IN",
+      publisher: { "@id": `${siteUrl}/#organization` },
+      potentialAction: {
+        "@type": "SearchAction",
+        target: {
+          "@type": "EntryPoint",
+          urlTemplate: `${siteUrl}/news?search={search_term_string}`,
+        },
+        "query-input": "required name=search_term_string",
+      },
+    },
+  ];
 }
 
 export const SITE_URL =

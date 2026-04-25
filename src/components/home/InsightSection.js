@@ -3,39 +3,46 @@ import CategoryBadge from "@/components/ui/CategoryBadge";
 import SectionHeading from "@/components/ui/SectionHeading";
 import { formatRelativeTime } from "@/lib/utils";
 
-const INSIGHTS = [
-  {
-    icon: "📈",
-    title: "JEE Cutoff Trends",
-    body: "General category cutoff has risen 3 percentile points YoY. Prepare for 92+ percentile for top NITs.",
-    color: "bg-blue-50 border-blue-200",
-    textColor: "text-blue-800",
-  },
-  {
-    icon: "🩺",
-    title: "NEET Seat Matrix",
-    body: "MBBS seats increased by 8,000 this year. State quota seats now open for all-India candidates.",
-    color: "bg-emerald-50 border-emerald-200",
-    textColor: "text-emerald-800",
-  },
-  {
-    icon: "🏛️",
-    title: "DU Admission Insight",
-    body: "CUET scores replacing merit lists. Students with 95+ in relevant subjects have strong chances.",
-    color: "bg-violet-50 border-violet-200",
-    textColor: "text-violet-800",
-  },
+const FALLBACK_INSIGHTS = [
+  { icon: "AI", title: "AI Rewrite Layer", body: "Fresh source headlines are rewritten into cleaner, student-first summaries and longer crawlable article bodies.", color: "bg-amber-50 border-amber-200", textColor: "text-amber-900" },
+  { icon: "SEO", title: "SEO Metadata", body: "Each processed article now gets sharper titles, descriptions, FAQs, and keyword hints designed for indexing.", color: "bg-sky-50 border-sky-200", textColor: "text-sky-900" },
+  { icon: "API", title: "Source Diversity", body: "The pipeline now supports RSS plus multiple news APIs so the homepage can stay fresher and less repetitive.", color: "bg-emerald-50 border-emerald-200", textColor: "text-emerald-900" },
 ];
 
-export default function InsightSection({ articles = [] }) {
+export default function InsightSection({ articles = [], insights = [] }) {
+  const cards = insights.length
+    ? insights.map((item) => ({
+        icon: item.source ? item.source.slice(0, 2).toUpperCase() : "AI",
+        title: item.title,
+        body: item.body,
+        href: item.href,
+        color: "bg-brand-light border-brand-border",
+        textColor: "text-[#0A0A0A]",
+      }))
+    : FALLBACK_INSIGHTS;
+
   return (
     <section className="mb-12">
       <SectionHeading>Student Insights</SectionHeading>
 
-      {/* Insight cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        {INSIGHTS.map((item) => (
-          <div
+        {cards.map((item) =>
+          item.href ? (
+            <Link
+              key={item.title}
+              href={item.href}
+              className={`rounded-news-lg border p-5 block hover:shadow-card transition-shadow ${item.color}`}
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-sm font-black tracking-wide">{item.icon}</span>
+                <h3 className={`text-[14px] font-bold ${item.textColor}`}>{item.title}</h3>
+              </div>
+              <p className={`text-[13px] leading-relaxed ${item.textColor} opacity-90`}>
+                {item.body}
+              </p>
+            </Link>
+          ) : (
+            <div
             key={item.title}
             className={`rounded-news-lg border p-5 ${item.color}`}
           >
@@ -47,10 +54,10 @@ export default function InsightSection({ articles = [] }) {
               {item.body}
             </p>
           </div>
-        ))}
+          )
+        )}
       </div>
 
-      {/* Recent articles with insight tag */}
       {articles.length > 0 && (
         <div className="space-y-0 divide-y divide-brand-border bg-white rounded-news-lg shadow-card overflow-hidden">
           {articles.slice(0, 5).map((article) => (

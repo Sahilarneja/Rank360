@@ -8,7 +8,7 @@ export default function ArticleCard({
   priority = false,
   variant = "default", // "default" | "compact" | "horizontal"
 }) {
-  const { title, slug, summary, category, image_url, published_at } = article;
+  const { title, slug, summary, category, image_url, published_at, source_name, reading_time_minutes } = article;
 
   if (variant === "horizontal") {
     return (
@@ -38,6 +38,7 @@ export default function ArticleCard({
           </Link>
           <time className="text-2xs text-brand-muted mt-1 block" dateTime={published_at}>
             {formatRelativeTime(published_at)}
+            {source_name ? ` · ${source_name}` : ""}
           </time>
         </div>
       </article>
@@ -69,6 +70,7 @@ export default function ArticleCard({
           </Link>
           <time className="text-2xs text-brand-muted mt-0.5 block" dateTime={published_at}>
             {formatRelativeTime(published_at)}
+            {source_name ? ` · ${source_name}` : ""}
           </time>
         </div>
       </article>
@@ -109,6 +111,11 @@ export default function ArticleCard({
           <time className="text-2xs text-brand-muted" dateTime={published_at}>
             {formatRelativeTime(published_at)}
           </time>
+          {source_name && (
+            <span className="text-2xs text-brand-muted">
+              {source_name}
+            </span>
+          )}
         </div>
 
         <Link href={`/news/${slug}`}>
@@ -123,6 +130,12 @@ export default function ArticleCard({
             {truncate(summary, 110)}
           </p>
         )}
+
+        {reading_time_minutes ? (
+          <p className="text-2xs text-brand-muted">
+            {reading_time_minutes} min read
+          </p>
+        ) : null}
 
         <Link
           href={`/news/${slug}`}

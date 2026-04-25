@@ -79,11 +79,14 @@ export default async function ArticlePage({ params }) {
 
   return (
     <>
-      {/* JSON-LD */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      {/* JSON-LD: NewsArticle + BreadcrumbList + FAQPage */}
+      {(Array.isArray(jsonLd) ? jsonLd : [jsonLd]).map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -112,6 +115,12 @@ export default async function ArticlePage({ params }) {
               >
                 {formatFullDate(article.published_at)}
               </time>
+              {article.source_name && (
+                <span className="text-sm text-brand-muted">Source: {article.source_name}</span>
+              )}
+              {article.reading_time_minutes ? (
+                <span className="text-sm text-brand-muted">{article.reading_time_minutes} min read</span>
+              ) : null}
               {article.updated_at && article.updated_at !== article.published_at && (
                 <span className="text-xs text-brand-muted">
                   · Updated {formatDate(article.updated_at)}
@@ -164,10 +173,41 @@ export default async function ArticlePage({ params }) {
               dangerouslySetInnerHTML={{ __html: article.content || "" }}
             />
 
+            {article.external_url && (
+              <div className="mt-6 rounded-news border border-brand-border bg-brand-light p-4">
+                <p className="text-sm text-[#111111]">
+                  Original source:
+                  {" "}
+                  <a
+                    href={article.external_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-brand-blue hover:underline"
+                  >
+                    {article.source_name || "View source article"}
+                  </a>
+                </p>
+              </div>
+            )}
+
             {/* Ad – mid content */}
             <div className="my-8">
               <AdUnit slot="3344556677" format="rectangle" className="ad-slot w-full max-w-xl mx-auto" />
             </div>
+
+            {article.faq?.length > 0 && (
+              <section className="mt-8">
+                <SectionHeading>Quick Answers</SectionHeading>
+                <div className="space-y-3">
+                  {article.faq.map((item) => (
+                    <div key={item.question} className="rounded-news border border-brand-border p-4 bg-white">
+                      <h2 className="text-[15px] font-bold text-[#111111] mb-2">{item.question}</h2>
+                      <p className="text-sm text-brand-muted leading-relaxed">{item.answer}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Tags */}
             {article.tags?.length > 0 && (

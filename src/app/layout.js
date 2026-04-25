@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
-import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/utils";
+import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, buildSiteSchema } from "@/lib/utils";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -68,10 +68,16 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID;
+  const siteSchema = buildSiteSchema(SITE_URL);
 
   return (
     <html lang="en" className={inter.variable}>
       <head>
+        {/* Site-level schema: Organization + WebSite + SearchAction */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }}
+        />
         {adsenseId && (
           <script
             async

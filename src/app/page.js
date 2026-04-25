@@ -4,6 +4,7 @@ import {
   getLatestArticles,
   getLiveUpdates,
   getArticlesByCategory,
+  getHomepageInsights,
 } from "@/lib/articles";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL } from "@/lib/utils";
 import LiveTicker from "@/components/ui/LiveTicker";
@@ -28,14 +29,15 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  let heroArticles = [], latestArticles = [], liveUpdates = [], insightArticles = [];
+  let heroArticles = [], latestArticles = [], liveUpdates = [], insightArticles = [], insights = [];
 
   try {
-    [heroArticles, latestArticles, liveUpdates, insightArticles] = await Promise.all([
+    [heroArticles, latestArticles, liveUpdates, insightArticles, insights] = await Promise.all([
       getHeroArticles(),
       getLatestArticles({ skip: 5, limit: 9 }),
       getLiveUpdates(12),
       getArticlesByCategory("jee", 5),
+      getHomepageInsights(3),
     ]);
   } catch (err) {
     console.error("HomePage data fetch error:", err.message);
@@ -70,7 +72,7 @@ export default async function HomePage() {
         </div>
 
         {/* Student insights */}
-        <InsightSection articles={insightArticles} />
+        <InsightSection articles={insightArticles} insights={insights} />
       </div>
     </>
   );

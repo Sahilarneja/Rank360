@@ -31,6 +31,9 @@ export default function HeroSection({ featured, secondary = [] }) {
             <time className="text-xs text-gray-300" dateTime={featured.published_at}>
               {formatRelativeTime(featured.published_at)}
             </time>
+            {featured.source_name && (
+              <span className="text-xs text-gray-300">{featured.source_name}</span>
+            )}
           </div>
           <Link href={`/news/${featured.slug}`}>
             <h1 className="text-white font-black text-[22px] md:text-[28px] leading-tight
@@ -84,6 +87,9 @@ export default function HeroSection({ featured, secondary = [] }) {
                   <time className="text-2xs text-brand-muted" dateTime={article.published_at}>
                     {formatRelativeTime(article.published_at)}
                   </time>
+                  {article.source_name && (
+                    <span className="text-2xs text-brand-muted">{article.source_name}</span>
+                  )}
                 </div>
                 <Link href={`/news/${article.slug}`}>
                   <h2 className="text-[13.5px] font-bold text-[#111111] leading-snug line-clamp-2

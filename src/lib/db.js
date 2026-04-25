@@ -15,8 +15,7 @@ async function getQuery() {
   if (_query) return _query;
 
   if (isNeon) {
-    const { neon, neonConfig } = await import("@neondatabase/serverless");
-    neonConfig.fetchConnectionCache = true;
+    const { neon } = await import("@neondatabase/serverless");
     const sql = neon(process.env.DATABASE_URL);
     _query = async (text, params = []) => {
       const rows = await sql.query(text, params);
