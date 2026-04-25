@@ -130,7 +130,7 @@ export async function getRelatedArticles(category, excludeSlug, limit = 4) {
 
 export async function getAllSlugs() {
   const result = await query(
-    `SELECT slug, updated_at FROM articles ORDER BY published_at DESC`
+    `SELECT slug, title, published_at, updated_at FROM articles ORDER BY published_at DESC`
   );
   return result.rows;
 }

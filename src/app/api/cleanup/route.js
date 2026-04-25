@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
 import { query } from "@/lib/db";
 
-// Deletes articles older than 48 hours
-// Called by external cron (cron-job.org) every 6 hours
-// Protected by CRON_SECRET header
+// Keeps the article archive intact — only prunes articles beyond the 2000-article cap
+// and live_updates older than 24 hours (ticker only needs recent items).
+// Called by external cron (cron-job.org) every 6 hours.
+// Protected by CRON_SECRET header.
 
 export async function GET(request) {
   const authHeader = request.headers.get("authorization");
@@ -15,18 +16,24 @@ export async function GET(request) {
   }
 
   try {
+    // Keep the 2000 most recent articles — delete anything beyond that cap.
+    // This preserves the full archive for SEO while preventing unbounded DB growth.
     const result = await query(
       `DELETE FROM articles
-       WHERE published_at < NOW() - INTERVAL '6 hours'
+       WHERE id IN (
+         SELECT id FROM articles
+         ORDER BY published_at DESC
+         OFFSET 2000
+       )
        RETURNING id`
     );
 
     const deleted = result.rows.length;
 
-    // Also clean up live_updates older than 3 hours
+    // Clean up live_updates older than 24 hours — ticker only needs recent items
     const liveResult = await query(
       `DELETE FROM live_updates
-       WHERE created_at < NOW() - INTERVAL '3 hours'
+       WHERE created_at < NOW() - INTERVAL '24 hours'
        RETURNING id`
     );
 

@@ -242,6 +242,368 @@ export const EVERGREEN_GUIDES = [
       },
     ],
   },
+
+  // ── Additional high-intent evergreen guides ────────────────────
+
+  {
+    slug: "jee-main-eligibility-criteria-guide",
+    category: "jee",
+    title: "JEE Main Eligibility Criteria — Complete Guide",
+    summary:
+      "Everything students need to know about JEE Main eligibility: age limit, qualifying exam requirements, number of attempts, and category-wise rules.",
+    heroTitle: "JEE Main Eligibility Criteria: Age, Attempts, and Qualifying Marks",
+    heroDescription:
+      "Check eligibility before filling the form — age limit, class 12 requirements, attempt count, and category-specific rules explained clearly.",
+    sections: [
+      {
+        heading: "Age and qualifying exam requirements",
+        body:
+          "Students must have passed class 12 or equivalent with Physics, Chemistry, and Mathematics. There is no upper age limit for JEE Main as of the latest NTA guidelines, but students should verify the current notification.",
+      },
+      {
+        heading: "Number of attempts",
+        body:
+          "Students can attempt JEE Main up to three consecutive years after passing class 12. Each year has two sessions, so the total attempt window is six sessions across three years.",
+      },
+      {
+        heading: "Category-wise rules",
+        body:
+          "SC, ST, and PwD candidates may have relaxed qualifying marks. Always check the official NTA notification for the current cycle as rules can change.",
+      },
+    ],
+    faq: [
+      {
+        question: "Can a student who passed class 12 in 2023 appear for JEE Main 2026?",
+        answer:
+          "Yes, provided they have not exhausted their three-year attempt window. Students who passed in 2023 can appear in 2024, 2025, and 2026.",
+      },
+      {
+        question: "Is there a minimum percentage required in class 12 for JEE Main?",
+        answer:
+          "There is no minimum percentage for appearing in JEE Main, but for admission to NITs and IIITs through JoSAA, students need at least 75% in class 12 (65% for SC/ST).",
+      },
+    ],
+  },
+
+  {
+    slug: "jee-advanced-registration-guide",
+    category: "jee",
+    title: "JEE Advanced Registration — Step-by-Step Guide",
+    summary:
+      "How to register for JEE Advanced: eligibility cutoff from JEE Main, registration steps, fee payment, and what to keep ready before the window opens.",
+    heroTitle: "JEE Advanced Registration: Cutoff, Steps, and Documents",
+    heroDescription:
+      "Only the top 2.5 lakh JEE Main qualifiers can register for JEE Advanced. Here is what to do the moment results are out.",
+    sections: [
+      {
+        heading: "Who can register",
+        body:
+          "Only candidates who qualify JEE Main and fall within the top 2.5 lakh rank (category-wise) are eligible. The cutoff rank is announced with JEE Main results.",
+      },
+      {
+        heading: "Registration steps",
+        body:
+          "Log in to the JEE Advanced portal using JEE Main roll number, fill personal and academic details, upload documents, pay the registration fee, and download the confirmation page.",
+      },
+      {
+        heading: "What to keep ready",
+        body:
+          "JEE Main scorecard, class 10 and 12 certificates, category certificate if applicable, passport-size photo, and a scanned signature in the required format.",
+      },
+    ],
+    faq: [
+      {
+        question: "Can a student who appeared in JEE Main but did not qualify register for JEE Advanced?",
+        answer:
+          "No. Only candidates within the top 2.5 lakh rank in JEE Main are eligible to register for JEE Advanced.",
+      },
+      {
+        question: "How many times can a student appear for JEE Advanced?",
+        answer:
+          "A student can appear for JEE Advanced a maximum of two times in two consecutive years.",
+      },
+    ],
+  },
+
+  {
+    slug: "neet-ug-eligibility-and-preparation-guide",
+    category: "neet",
+    title: "NEET UG Eligibility and Preparation Guide",
+    summary:
+      "NEET UG eligibility rules, subject requirements, attempt limits, and a practical preparation framework for students targeting MBBS and BDS admissions.",
+    heroTitle: "NEET UG Eligibility, Attempt Limit, and Preparation Strategy",
+    heroDescription:
+      "Understand who can appear for NEET UG, how many times, and what a realistic preparation plan looks like for medical aspirants.",
+    sections: [
+      {
+        heading: "Eligibility basics",
+        body:
+          "Students must have passed class 12 with Physics, Chemistry, and Biology/Biotechnology. The minimum age is 17 years at the time of admission. There is no upper age limit as per the Supreme Court ruling.",
+      },
+      {
+        heading: "Attempt limit",
+        body:
+          "There is currently no cap on the number of NEET UG attempts. Students can appear every year until they secure admission or choose to stop.",
+      },
+      {
+        heading: "Preparation framework",
+        body:
+          "NCERT is the foundation for all three subjects. Biology carries 360 marks out of 720 — it is the highest-weight subject and the most predictable. Physics and Chemistry require concept clarity and formula application.",
+      },
+    ],
+    faq: [
+      {
+        question: "Is NEET UG required for all MBBS colleges in India?",
+        answer:
+          "Yes. NEET UG is mandatory for admission to all government and private MBBS, BDS, AYUSH, and nursing colleges in India.",
+      },
+      {
+        question: "What is the minimum score needed to qualify NEET UG?",
+        answer:
+          "The qualifying percentile is 50th for general category and 40th for SC/ST/OBC. The actual cutoff score varies each year based on difficulty and number of candidates.",
+      },
+    ],
+  },
+
+  {
+    slug: "neet-pg-counselling-guide",
+    category: "neet",
+    title: "NEET PG Counselling — MCC and State Quota Guide",
+    summary:
+      "How NEET PG counselling works: MCC rounds, state quota process, choice filling strategy, and what MBBS graduates need to prepare before registration opens.",
+    heroTitle: "NEET PG Counselling: MCC Rounds, State Quota, and Choice Filling",
+    heroDescription:
+      "Navigate NEET PG counselling from registration to seat allotment — MCC process, state quota differences, and how to fill choices strategically.",
+    sections: [
+      {
+        heading: "MCC vs state quota",
+        body:
+          "MCC conducts counselling for 50% All India Quota seats in government colleges and 100% seats in central and deemed universities. The remaining 50% state quota seats are filled by respective state counselling authorities.",
+      },
+      {
+        heading: "Choice filling strategy",
+        body:
+          "Fill choices in order of genuine preference, not just rank safety. Consider specialisation, college reputation, bond requirements, and location before locking choices.",
+      },
+      {
+        heading: "Documents to prepare",
+        body:
+          "MBBS degree and mark sheets, internship completion certificate, NEET PG scorecard, category certificate if applicable, and identity proof.",
+      },
+    ],
+    faq: [
+      {
+        question: "Can a candidate participate in both MCC and state counselling?",
+        answer:
+          "Yes, but if a candidate accepts a seat through MCC, they may need to withdraw from state counselling depending on the state's rules.",
+      },
+      {
+        question: "What happens if a candidate does not report after seat allotment?",
+        answer:
+          "Non-reporting forfeits the seat and the security deposit. The candidate may also be barred from future rounds depending on the counselling authority's rules.",
+      },
+    ],
+  },
+
+  {
+    slug: "cuet-subject-selection-guide",
+    category: "cuet",
+    title: "CUET Subject Selection Guide — Which Subjects to Choose",
+    summary:
+      "How to pick the right CUET subjects for your target universities and programmes, with a breakdown of domain subjects, language requirements, and general test strategy.",
+    heroTitle: "CUET Subject Selection: Domain Subjects, Languages, and General Test",
+    heroDescription:
+      "Choosing the wrong subjects in CUET can close doors to your target university. Here is how to map subjects to programmes correctly.",
+    sections: [
+      {
+        heading: "How CUET subjects work",
+        body:
+          "CUET has three sections: language tests, domain-specific subjects, and a general test. Universities specify which combination they accept for each programme.",
+      },
+      {
+        heading: "How to map subjects to programmes",
+        body:
+          "Check the admission criteria of each target university before selecting subjects. A student applying for B.Com at DU needs different subjects than one applying for B.Sc. Physics at BHU.",
+      },
+      {
+        heading: "General test strategy",
+        body:
+          "The general test is required by many universities for humanities and social science programmes. It covers reasoning, general knowledge, and quantitative aptitude.",
+      },
+    ],
+    faq: [
+      {
+        question: "Can a student change CUET subjects after registration?",
+        answer:
+          "Subject changes are allowed only during the correction window. After that, the selected subjects are final.",
+      },
+      {
+        question: "How many domain subjects can a student choose in CUET?",
+        answer:
+          "Students can choose up to six domain subjects. Most programmes require two to three, so choosing more gives flexibility across multiple universities.",
+      },
+    ],
+  },
+
+  {
+    slug: "du-csas-admission-guide",
+    category: "cuet",
+    title: "DU CSAS Admission Guide — CUET to Seat Allotment",
+    summary:
+      "How Delhi University's CSAS portal works: CUET score submission, programme preference filling, round-wise allotment, and reporting steps for DU admissions.",
+    heroTitle: "DU CSAS: From CUET Score to Seat Allotment in Delhi University",
+    heroDescription:
+      "Step-by-step guide to DU CSAS — how to register, fill programme preferences, understand round movement, and complete admission after allotment.",
+    sections: [
+      {
+        heading: "What CSAS is",
+        body:
+          "CSAS (Common Seat Allocation System) is DU's centralised admission portal. Students submit CUET scores, fill programme and college preferences, and receive allotments through multiple rounds.",
+      },
+      {
+        heading: "How rounds work",
+        body:
+          "CSAS runs multiple rounds. In each round, students can accept, upgrade, or withdraw. Accepting a seat in an early round does not prevent upgrading to a better option in later rounds.",
+      },
+      {
+        heading: "Reporting after allotment",
+        body:
+          "After final allotment, students must report to the allotted college with original documents within the deadline. Missing the reporting window forfeits the seat.",
+      },
+    ],
+    faq: [
+      {
+        question: "Can a student apply to DU without CUET?",
+        answer:
+          "No. DU uses CUET scores exclusively for undergraduate admissions. There is no direct admission without a valid CUET score.",
+      },
+      {
+        question: "What is the difference between CSAS round 1 and round 2?",
+        answer:
+          "Round 1 allots seats based on initial preferences. Round 2 allows students who accepted a seat to upgrade to a higher preference if seats are available.",
+      },
+    ],
+  },
+
+  {
+    slug: "josaa-choice-filling-strategy-guide",
+    category: "admissions",
+    title: "JoSAA Choice Filling Strategy — IIT, NIT, IIIT Guide",
+    summary:
+      "How to fill JoSAA choices strategically: understanding freeze, float, and slide options, reading previous year cutoffs, and avoiding common mistakes during counselling.",
+    heroTitle: "JoSAA Choice Filling: Freeze, Float, Slide, and Cutoff Strategy",
+    heroDescription:
+      "Smart choice filling in JoSAA can mean the difference between your preferred branch and a fallback. Here is how to approach it.",
+    sections: [
+      {
+        heading: "Freeze, float, and slide explained",
+        body:
+          "Freeze means accepting the current allotment and not participating in further upgrades. Float means accepting the current seat but remaining in the pool for a better option. Slide means accepting the current institute but trying for a better branch within the same institute.",
+      },
+      {
+        heading: "How to use previous year cutoffs",
+        body:
+          "Previous year cutoffs give a directional estimate, not a guarantee. Compare opening and closing ranks across multiple years to understand the range, not just the last year's closing rank.",
+      },
+      {
+        heading: "Common mistakes",
+        body:
+          "Filling too few choices, not including safe options, or prioritising institute over branch without thinking through career implications are the most common errors.",
+      },
+    ],
+    faq: [
+      {
+        question: "How many choices should a student fill in JoSAA?",
+        answer:
+          "There is no fixed number, but filling 20 to 40 well-researched choices across institutes and branches gives a good balance of aspiration and safety.",
+      },
+      {
+        question: "Can a student exit JoSAA after accepting a seat?",
+        answer:
+          "Yes, but exiting after accepting a seat forfeits the seat fee. Students should only exit if they have a confirmed admission elsewhere.",
+      },
+    ],
+  },
+
+  {
+    slug: "exam-result-scorecard-download-guide",
+    category: "results",
+    title: "How to Download Exam Scorecards — JEE, NEET, CUET Guide",
+    summary:
+      "Step-by-step instructions for downloading JEE Main, JEE Advanced, NEET UG, and CUET scorecards from official portals, with tips for saving and verifying details.",
+    heroTitle: "Scorecard Download Guide: JEE Main, NEET, CUET, and JEE Advanced",
+    heroDescription:
+      "Official scorecard download steps for every major entrance exam — what to check, how to save, and what to do if details are wrong.",
+    sections: [
+      {
+        heading: "JEE Main scorecard",
+        body:
+          "Log in to jeemain.nta.nic.in with application number and date of birth. The scorecard shows NTA score, percentile, and All India Rank. Download and save as PDF immediately.",
+      },
+      {
+        heading: "NEET UG scorecard",
+        body:
+          "Available on neet.nta.nic.in after results are declared. Shows subject-wise marks, total score, percentile, and All India Rank. Required for all counselling registrations.",
+      },
+      {
+        heading: "What to verify on the scorecard",
+        body:
+          "Check name spelling, date of birth, category, and marks carefully. Any discrepancy must be reported to NTA within the correction window — errors not reported in time can cause counselling issues.",
+      },
+    ],
+    faq: [
+      {
+        question: "How long is the scorecard available for download?",
+        answer:
+          "NTA keeps scorecards available for a limited period. Download and save a copy immediately after results are declared — do not rely on downloading it later.",
+      },
+      {
+        question: "What if the scorecard shows wrong marks?",
+        answer:
+          "Raise a grievance on the official NTA portal within the challenge window. After the window closes, corrections are generally not accepted.",
+      },
+    ],
+  },
+
+  {
+    slug: "college-admission-documents-checklist",
+    category: "admissions",
+    title: "College Admission Documents Checklist — What to Carry for Reporting",
+    summary:
+      "A complete checklist of documents required for college admission reporting after JoSAA, MCC, CSAS, and state counselling seat allotments.",
+    heroTitle: "Admission Reporting Documents Checklist: JoSAA, MCC, CSAS, State Counselling",
+    heroDescription:
+      "Missing even one document at reporting can delay or cancel your admission. Use this checklist before heading to the allotted college.",
+    sections: [
+      {
+        heading: "Universal documents required at all colleges",
+        body:
+          "Class 10 marksheet and certificate, class 12 marksheet and certificate, entrance exam scorecard (JEE/NEET/CUET), allotment letter, identity proof (Aadhaar/passport), passport-size photographs, and migration certificate from the previous institution.",
+      },
+      {
+        heading: "Category-specific documents",
+        body:
+          "SC/ST/OBC candidates need a valid caste certificate issued by a competent authority. EWS candidates need an income and asset certificate. PwD candidates need a disability certificate from a government hospital.",
+      },
+      {
+        heading: "What to do if a document is missing",
+        body:
+          "Contact the college admission office immediately. Some colleges allow provisional admission with an undertaking, but this varies. Do not assume — call ahead.",
+      },
+    ],
+    faq: [
+      {
+        question: "Are original documents required or are photocopies enough?",
+        answer:
+          "Both are required. Bring originals for verification and multiple sets of self-attested photocopies. Some colleges retain one set.",
+      },
+      {
+        question: "What is a migration certificate and where do I get it?",
+        answer:
+          "A migration certificate is issued by the board or university you last studied under. Apply for it as soon as results are declared — it can take 2 to 4 weeks.",
+      },
+    ],
+  },
 ];
 
 export function getExamHubByCategory(category) {

@@ -7,8 +7,16 @@ const RSS_SOURCES = [
   { url: "https://timesofindia.indiatimes.com/rss/feed/etimes/education", category: "news", name: "Times of India Education" },
   { url: "https://www.hindustantimes.com/feeds/rss/education/rssfeed.xml", category: "news", name: "Hindustan Times Education" },
   { url: "https://feeds.feedburner.com/ndtveducation-latest", category: "news", name: "NDTV Education Latest" },
+  // Targeted Google News queries — high-intent, exam-specific
   { url: "https://news.google.com/rss/search?q=JEE+OR+NEET+OR+CUET+when:7d&hl=en-IN&gl=IN&ceid=IN:en", category: "news", name: "Google News Education India" },
   { url: "https://news.google.com/rss/search?q=NTA+exam+OR+college+admission+India&hl=en-IN&gl=IN&ceid=IN:en", category: "news", name: "Google News Admissions India" },
+  { url: "https://news.google.com/rss/search?q=JEE+Main+2026+OR+JEE+Advanced+2026&hl=en-IN&gl=IN&ceid=IN:en", category: "jee", name: "Google News JEE 2026" },
+  { url: "https://news.google.com/rss/search?q=NEET+2026+counselling+OR+NEET+result+2026&hl=en-IN&gl=IN&ceid=IN:en", category: "neet", name: "Google News NEET 2026" },
+  { url: "https://news.google.com/rss/search?q=CUET+2026+OR+DU+admission+2026&hl=en-IN&gl=IN&ceid=IN:en", category: "cuet", name: "Google News CUET 2026" },
+  { url: "https://news.google.com/rss/search?q=JoSAA+counselling+OR+NIT+seat+allotment&hl=en-IN&gl=IN&ceid=IN:en", category: "admissions", name: "Google News JoSAA" },
+  // Education-specific publishers
+  { url: "https://www.careers360.com/rss/news", category: "news", name: "Careers360" },
+  { url: "https://www.shiksha.com/rss/news", category: "news", name: "Shiksha" },
 ];
 
 const CATEGORY_KEYWORDS = {
@@ -340,6 +348,26 @@ function buildSeoMeta(payload) {
   };
 }
 
+// Injects a contextual internal link to the relevant exam hub after the first </p>
+// This passes PageRank to evergreen hub pages and improves crawl depth.
+const HUB_LINKS = {
+  jee:        { href: "/exams/jee",        label: "JEE Hub — dates, cutoffs, counselling" },
+  neet:       { href: "/exams/neet",       label: "NEET Hub — counselling, scorecards, MCC" },
+  cuet:       { href: "/exams/cuet",       label: "CUET Hub — syllabus, scores, admissions" },
+  admissions: { href: "/exams/admissions", label: "Admissions Hub — seat allotment, merit lists" },
+  results:    { href: "/news?category=results", label: "Latest Results — scorecards and answer keys" },
+  news:       { href: "/news",             label: "All Education News" },
+};
+
+function injectHubLink(html, category) {
+  const hub = HUB_LINKS[category] || HUB_LINKS.news;
+  const linkHtml = `\n<p class="rank360-hub-link">📌 <strong>Track every update:</strong> <a href="${hub.href}">${hub.label}</a></p>\n`;
+  // Insert after the first closing </p> tag
+  const idx = html.indexOf("</p>");
+  if (idx === -1) return html + linkHtml;
+  return html.slice(0, idx + 4) + linkHtml + html.slice(idx + 4);
+}
+
 function buildLiveUpdate(article) {
   return {
     title: article.title,
@@ -479,7 +507,7 @@ export async function runContentPipeline({ query, client = null, limitPerSource 
         title: enrichment.refinedTitle,
         slug: makeSlug(enrichment.refinedTitle || item.title),
         summary: enrichment.refinedSummary,
-        content: enrichment.articleHtml,
+        content: injectHubLink(enrichment.articleHtml, item.category),
         tags: enrichment.tags.length ? enrichment.tags : [item.category],
         seo_meta: buildSeoMeta(enrichment),
         reading_time_minutes: enrichment.readingTimeMinutes,

@@ -167,12 +167,32 @@ export default async function ArticlePage({ params }) {
               <AdUnit slot="2233445566" className="ad-slot w-full" />
             </div>
 
-            {/* Article body */}
-            <div
-              className="article-body"
-              itemProp="articleBody"
-              dangerouslySetInnerHTML={{ __html: article.content || "" }}
-            />
+            {/* Article body — split at 3rd paragraph for mid-content ad */}
+            {(() => {
+              const html = article.content || "";
+              const parts = splitAtParagraph(html, 3);
+              return (
+                <>
+                  <div
+                    className="article-body"
+                    itemProp="articleBody"
+                    dangerouslySetInnerHTML={{ __html: parts[0] }}
+                  />
+                  {parts[1] && (
+                    <>
+                      {/* Mid-article ad — highest CTR position on news sites */}
+                      <div className="my-6">
+                        <AdUnit slot="3344556677" format="rectangle" className="ad-slot w-full max-w-xl mx-auto" />
+                      </div>
+                      <div
+                        className="article-body"
+                        dangerouslySetInnerHTML={{ __html: parts[1] }}
+                      />
+                    </>
+                  )}
+                </>
+              );
+            })()}
 
             <div className="mt-8">
               <TrustPanel article={article} />
@@ -194,11 +214,6 @@ export default async function ArticlePage({ params }) {
                 </p>
               </div>
             )}
-
-            {/* Ad – mid content */}
-            <div className="my-8">
-              <AdUnit slot="3344556677" format="rectangle" className="ad-slot w-full max-w-xl mx-auto" />
-            </div>
 
             {article.faq?.length > 0 && (
               <section className="mt-8">
@@ -271,6 +286,31 @@ export default async function ArticlePage({ params }) {
           {/* ── Sidebar ───────────────────────────────────────── */}
           <aside className="lg:col-span-4 space-y-6">
 
+            {/* Telegram CTA — highest-ROI retention channel for Indian students */}
+            <div className="rounded-news-lg bg-[#0088cc] p-5 text-white">
+              <p className="text-2xs font-bold uppercase tracking-[0.2em] text-blue-100 mb-2">
+                Never miss an update
+              </p>
+              <h2 className="text-[18px] font-black leading-tight mb-2">
+                Get results &amp; cutoffs on Telegram
+              </h2>
+              <p className="text-sm text-blue-100 leading-relaxed mb-4">
+                Join 10,000+ students getting JEE, NEET, CUET alerts the moment they drop.
+              </p>
+              <a
+                href={process.env.NEXT_PUBLIC_TELEGRAM_URL || "https://t.me/rank360in"}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-white text-[#0088cc] font-black
+                           text-sm px-5 py-2.5 rounded-full hover:bg-blue-50 transition-colors"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+                </svg>
+                Join Telegram
+              </a>
+            </div>
+
             {/* Related articles */}
             {related.length > 0 && (
               <div className="bg-white rounded-news-lg shadow-card p-5">
@@ -310,6 +350,23 @@ export default async function ArticlePage({ params }) {
       </div>
     </>
   );
+}
+
+// ── Helpers ────────────────────────────────────────────────────
+
+// Splits HTML string after the Nth closing </p> tag.
+// Returns [before, after] — if fewer than N paragraphs exist, returns [html, ""].
+function splitAtParagraph(html, n = 3) {
+  let count = 0;
+  let idx = 0;
+  while (count < n && idx < html.length) {
+    const next = html.indexOf("</p>", idx);
+    if (next === -1) break;
+    count++;
+    idx = next + 4; // length of "</p>"
+  }
+  if (count < n) return [html, ""];
+  return [html.slice(0, idx), html.slice(idx)];
 }
 
 // ── Share bar ──────────────────────────────────────────────────
