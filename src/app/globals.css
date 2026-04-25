@@ -15,11 +15,14 @@
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Prevent any element from causing horizontal scroll */
+    overflow-x: hidden;
   }
 
   body {
     @apply bg-white text-[#111111];
     font-family: var(--font-inter);
+    overflow-x: hidden;
   }
 
   * { box-sizing: border-box; }
@@ -44,35 +47,85 @@
   .article-body {
     font-family: var(--font-merriweather);
     @apply text-[17px] leading-[1.85] text-[#1a1a1a];
+    /* Prevent any content (long URLs, unbroken strings) from overflowing */
+    overflow-wrap: break-word;
+    word-break: break-word;
+    min-width: 0;
   }
   .article-body h2 {
     font-family: var(--font-inter);
     @apply text-[22px] font-bold mt-10 mb-4 text-[#0A0A0A] tracking-tight;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
   .article-body h3 {
     font-family: var(--font-inter);
     @apply text-[19px] font-semibold mt-7 mb-3 text-[#0A0A0A];
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
-  .article-body p  { @apply mb-6; }
+  .article-body p  { @apply mb-6; overflow-wrap: break-word; word-break: break-word; }
   .article-body ul { @apply mb-6 pl-6 list-disc space-y-2; }
   .article-body ol { @apply mb-6 pl-6 list-decimal space-y-2; }
-  .article-body li { @apply leading-relaxed; }
+  .article-body li { @apply leading-relaxed; overflow-wrap: break-word; word-break: break-word; }
   .article-body strong { @apply font-bold text-[#0A0A0A]; }
-  .article-body a  { @apply text-brand-blue underline underline-offset-2 hover:text-brand-blue-dark; }
+  .article-body a  {
+    @apply text-brand-blue underline underline-offset-2 hover:text-brand-blue-dark;
+    overflow-wrap: break-word;
+    word-break: break-all; /* break long URLs */
+  }
   .article-body blockquote {
     @apply border-l-4 border-brand-blue pl-5 italic text-[#374151] my-8 text-[16px];
+    overflow-wrap: break-word;
   }
+  /* Tables — wrap in scrollable container via CSS */
   .article-body table {
-    @apply w-full border-collapse text-sm mb-6;
+    @apply border-collapse text-sm mb-6;
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+  .article-body thead,
+  .article-body tbody,
+  .article-body tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
   }
   .article-body th {
     @apply bg-brand-light font-semibold text-left px-4 py-2.5 border border-brand-border;
+    white-space: normal;
   }
   .article-body td {
     @apply px-4 py-2.5 border border-brand-border;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
   .article-body tr:nth-child(even) td {
     @apply bg-[#FAFAFA];
+  }
+  /* Images inside article body must never overflow */
+  .article-body img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+  }
+  /* Iframes (YouTube embeds etc.) */
+  .article-body iframe {
+    max-width: 100%;
+  }
+  /* Pre/code blocks */
+  .article-body pre {
+    overflow-x: auto;
+    @apply text-sm bg-gray-50 rounded-news p-4 mb-6;
+  }
+  .article-body code {
+    @apply text-sm bg-gray-100 px-1.5 py-0.5 rounded;
+    word-break: break-all;
   }
 
   /* ── Cards ────────────────────────────────────────────────── */

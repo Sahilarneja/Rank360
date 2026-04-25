@@ -90,11 +90,11 @@ export default async function ArticlePage({ params }) {
         />
       ))}
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-10 overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
           {/* ── Main article ──────────────────────────────────── */}
-          <article className="lg:col-span-8" itemScope itemType="https://schema.org/NewsArticle">
+          <article className="lg:col-span-8 min-w-0" itemScope itemType="https://schema.org/NewsArticle">
 
             {/* Breadcrumb */}
             <nav className="flex items-center gap-1.5 text-xs text-brand-muted mb-5" aria-label="Breadcrumb">
@@ -141,8 +141,8 @@ export default async function ArticlePage({ params }) {
 
             {/* Summary highlight */}
             {article.summary && (
-              <div className="bg-brand-blue-light border-l-4 border-brand-blue rounded-r-news p-4 mb-6">
-                <p className="text-[15px] font-medium text-[#1e3a5f] leading-relaxed" itemProp="description">
+              <div className="bg-brand-blue-light border-l-4 border-brand-blue rounded-r-news p-4 mb-6 overflow-hidden">
+                <p className="text-[15px] font-medium text-[#1e3a5f] leading-relaxed break-words" itemProp="description">
                   {article.summary}
                 </p>
               </div>
@@ -284,7 +284,7 @@ export default async function ArticlePage({ params }) {
           </article>
 
           {/* ── Sidebar ───────────────────────────────────────── */}
-          <aside className="lg:col-span-4 space-y-6">
+          <aside className="lg:col-span-4 space-y-6 min-w-0">
 
             {/* Telegram CTA — highest-ROI retention channel for Indian students */}
             <div className="rounded-news-lg bg-[#0088cc] p-5 text-white">
@@ -376,7 +376,7 @@ function ShareBar({ title, slug }) {
   const encodedTitle = encodeURIComponent(title);
 
   return (
-    <div className="flex items-center gap-3 mt-8 pt-6 border-t border-brand-border">
+    <div className="flex flex-wrap items-center gap-3 mt-8 pt-6 border-t border-brand-border">
       <span className="text-xs font-bold text-brand-muted uppercase tracking-wide">Share:</span>
       <a
         href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encoded}`}

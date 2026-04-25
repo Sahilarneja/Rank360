@@ -5,6 +5,10 @@ import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import AdSenseScript from "@/components/ads/AdSenseScript";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, buildSiteSchema } from "@/lib/utils";
 
+const currentYear = new Date().getFullYear();
+// Include both current and next year to capture early-cycle searches
+const nextYear = currentYear + 1;
+
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -13,9 +17,22 @@ export const metadata = {
   },
   description: SITE_DESCRIPTION,
   keywords: [
-    "JEE Main 2024", "NEET 2024", "CUET 2024",
-    "college admissions India", "JEE result", "NEET counselling",
-    "education news India", "JEE cutoff", "NEET cutoff",
+    `JEE Main ${currentYear}`,
+    `JEE Main ${nextYear}`,
+    `NEET ${currentYear}`,
+    `NEET ${nextYear}`,
+    `CUET ${currentYear}`,
+    `CUET ${nextYear}`,
+    "college admissions India",
+    "JEE result",
+    "NEET counselling",
+    "education news India",
+    "JEE cutoff",
+    "NEET cutoff",
+    "JEE Advanced registration",
+    "NEET scorecard download",
+    "JoSAA counselling",
+    "NTA exam updates",
   ],
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   creator: SITE_NAME,

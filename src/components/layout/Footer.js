@@ -36,6 +36,7 @@ const FOOTER_COLS = [
       { label: "JEE News", href: "/news?category=jee" },
       { label: "NEET News", href: "/news?category=neet" },
       { label: "Results", href: "/news?category=results" },
+      { label: "About Us", href: "/about" },
       { label: "Sitemap", href: "/sitemap.xml" },
       { label: "Privacy Policy", href: "/privacy" },
       { label: "Terms of Use", href: "/terms" },
