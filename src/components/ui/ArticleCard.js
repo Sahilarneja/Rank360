@@ -1,31 +1,30 @@
 import Link from "next/link";
 import Image from "next/image";
 import CategoryBadge from "./CategoryBadge";
-import { formatRelativeTime, truncate } from "@/lib/utils";
+import { formatRelativeTime, getArticleImageUrl, truncate } from "@/lib/utils";
 
 export default function ArticleCard({
   article,
   priority = false,
   variant = "default", // "default" | "compact" | "horizontal"
 }) {
-  const { title, slug, summary, category, image_url, published_at, source_name, reading_time_minutes } = article;
+  const { title, slug, summary, category, published_at, source_name, reading_time_minutes } = article;
+  const displayImageUrl = getArticleImageUrl(article);
 
   if (variant === "horizontal") {
     return (
       <article className="group flex gap-3 py-3 border-b border-brand-border last:border-0">
-        {image_url && (
-          <Link href={`/news/${slug}`} className="flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden bg-gray-100">
-            <Image
-              src={image_url}
-              alt={title}
-              width={80}
-              height={64}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              loading="lazy"
-              sizes="80px"
-            />
-          </Link>
-        )}
+        <Link href={`/news/${slug}`} className="flex-shrink-0 w-20 h-16 rounded-lg overflow-hidden bg-gray-100">
+          <Image
+            src={displayImageUrl}
+            alt={title}
+            width={80}
+            height={64}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            loading="lazy"
+            sizes="80px"
+          />
+        </Link>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-1.5 mb-1">
             <CategoryBadge category={category} />
@@ -48,19 +47,17 @@ export default function ArticleCard({
   if (variant === "compact") {
     return (
       <article className="group flex gap-3 items-start">
-        {image_url && (
-          <Link href={`/news/${slug}`} className="flex-shrink-0 w-16 h-14 rounded-lg overflow-hidden bg-gray-100">
-            <Image
-              src={image_url}
-              alt={title}
-              width={64}
-              height={56}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-              loading="lazy"
-              sizes="64px"
-            />
-          </Link>
-        )}
+        <Link href={`/news/${slug}`} className="flex-shrink-0 w-16 h-14 rounded-lg overflow-hidden bg-gray-100">
+          <Image
+            src={displayImageUrl}
+            alt={title}
+            width={64}
+            height={56}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            loading="lazy"
+            sizes="64px"
+          />
+        </Link>
         <div className="flex-1 min-w-0">
           <Link href={`/news/${slug}`}>
             <h3 className="text-[13px] font-semibold text-[#111111] leading-snug line-clamp-2
@@ -85,23 +82,16 @@ export default function ArticleCard({
         href={`/news/${slug}`}
         className="block overflow-hidden aspect-[16/9] bg-gray-100 flex-shrink-0"
       >
-        {image_url ? (
-          <Image
-            src={image_url}
-            alt={title}
-            width={480}
-            height={270}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-            loading={priority ? "eager" : "lazy"}
-            priority={priority}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          />
-        ) : (
-          <div className="w-full h-full bg-gradient-to-br from-blue-50 to-indigo-100
-                          flex items-center justify-center">
-            <span className="text-brand-blue text-3xl font-black opacity-20">R360</span>
-          </div>
-        )}
+        <Image
+          src={displayImageUrl}
+          alt={title}
+          width={480}
+          height={270}
+          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          loading={priority ? "eager" : "lazy"}
+          priority={priority}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        />
       </Link>
 
       {/* Body */}

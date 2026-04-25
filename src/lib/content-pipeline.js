@@ -19,6 +19,11 @@ const CATEGORY_KEYWORDS = {
   results: ["result", "scorecard", "answer key", "rank list", "marks", "percentile"],
 };
 
+const BLOCKED_IMAGE_HOSTS = [
+  "hindustantimes.com",
+  "htmedia.in",
+];
+
 function dedupe(items) {
   const seen = new Set();
   return items.filter((item) => {
@@ -57,6 +62,25 @@ function buildSourceUrl(url) {
   } catch {
     return null;
   }
+}
+
+function isBlockedImageSource(url = "", sourceName = "") {
+  const loweredSource = sourceName.toLowerCase();
+  if (loweredSource.includes("hindustan times")) return true;
+
+  try {
+    const hostname = new URL(url).hostname.toLowerCase();
+    return BLOCKED_IMAGE_HOSTS.some(
+      (blocked) => hostname === blocked || hostname.endsWith(`.${blocked}`)
+    );
+  } catch {
+    return false;
+  }
+}
+
+function sanitizeImageUrl(url, sourceName = "") {
+  if (!url || isBlockedImageSource(url, sourceName)) return null;
+  return url;
 }
 
 function toIsoDate(value) {
@@ -161,7 +185,7 @@ async function fetchNewsApiItems() {
     raw_summary: item.description || item.content || item.title,
     summary: item.description || item.content || item.title,
     external_url: item.url,
-    image_url: null,
+    image_url: sanitizeImageUrl(item.urlToImage, item.source?.name || "NewsAPI"),
     source_name: item.source?.name || "NewsAPI",
     source_url: item.url,
     source_type: "newsapi",
@@ -189,7 +213,7 @@ async function fetchGNewsItems() {
     raw_summary: item.description || item.content || item.title,
     summary: item.description || item.content || item.title,
     external_url: item.url,
-    image_url: null,
+    image_url: sanitizeImageUrl(item.image, item.source?.name || "GNews"),
     source_name: item.source?.name || "GNews",
     source_url: item.source?.url || item.url,
     source_type: "gnews",
@@ -217,7 +241,7 @@ async function fetchMediastackItems() {
     raw_summary: item.description || item.title,
     summary: item.description || item.title,
     external_url: item.url,
-    image_url: null,
+    image_url: sanitizeImageUrl(item.image, item.source || "Mediastack"),
     source_name: item.source || "Mediastack",
     source_url: item.url,
     source_type: "mediastack",
@@ -244,7 +268,7 @@ async function fetchCurrentsItems() {
     raw_summary: item.description || item.title,
     summary: item.description || item.title,
     external_url: item.url,
-    image_url: null,
+    image_url: sanitizeImageUrl(item.image, item.author || item.id || "Currents"),
     source_name: item.author || item.id || "Currents",
     source_url: item.url,
     source_type: "currents",
@@ -271,7 +295,7 @@ async function fetchTheNewsApiItems() {
     raw_summary: item.description || item.snippet || item.title,
     summary: item.description || item.snippet || item.title,
     external_url: item.url,
-    image_url: null,
+    image_url: sanitizeImageUrl(item.image_url, item.source || "TheNewsAPI"),
     source_name: item.source || "TheNewsAPI",
     source_url: item.url,
     source_type: "thenewsapi",
@@ -295,7 +319,7 @@ function normalizeItems(items) {
           summary: cleanSummary,
           slug: makeSlug(item.title),
           category,
-          image_url: null,
+          image_url: sanitizeImageUrl(item.image_url, item.source_name || item.source_type),
           source_name: item.source_name || "Unknown Source",
           source_url: item.source_url || buildSourceUrl(item.external_url),
           external_url: item.external_url,

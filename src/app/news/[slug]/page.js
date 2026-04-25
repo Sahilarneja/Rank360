@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { getArticleBySlug, getRelatedArticles, getAllSlugs } from "@/lib/articles";
-import { buildSeoMeta, buildJsonLd, formatFullDate, formatDate, SITE_URL, SITE_NAME } from "@/lib/utils";
+import { buildSeoMeta, buildJsonLd, formatFullDate, formatDate, getArticleImageUrl, SITE_URL, SITE_NAME } from "@/lib/utils";
 import CategoryBadge from "@/components/ui/CategoryBadge";
 import ArticleCard from "@/components/ui/ArticleCard";
 import AdUnit from "@/components/ads/AdUnit";
@@ -27,6 +27,7 @@ export async function generateMetadata({ params }) {
 
   const { title, description, keywords } = buildSeoMeta(article);
   const canonicalUrl = `${SITE_URL}/news/${slug}`;
+  const imageUrl = getArticleImageUrl(article, { absolute: true, siteUrl: SITE_URL });
 
   return {
     title,
@@ -41,15 +42,13 @@ export async function generateMetadata({ params }) {
       publishedTime: article.published_at,
       modifiedTime: article.updated_at || article.published_at,
       authors: [SITE_NAME],
-      images: article.image_url
-        ? [{ url: article.image_url, width: 1200, height: 630, alt: title }]
-        : [],
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: title }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: article.image_url ? [article.image_url] : [],
+      images: [imageUrl],
     },
   };
 }
@@ -73,6 +72,7 @@ export default async function ArticlePage({ params }) {
   }
 
   const jsonLd = buildJsonLd(article, SITE_URL);
+  const displayImageUrl = getArticleImageUrl(article);
 
   // Extract "what it means" section from content if present
   const hasInsight = article.content?.toLowerCase().includes("what it means");
@@ -147,19 +147,17 @@ export default async function ArticlePage({ params }) {
             )}
 
             {/* Feature image */}
-            {article.image_url && (
-              <figure className="mb-6 rounded-news-lg overflow-hidden shadow-card" itemProp="image">
-                <Image
-                  src={article.image_url}
-                  alt={article.title}
-                  width={800}
-                  height={450}
-                  className="w-full object-cover"
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 66vw"
-                />
-              </figure>
-            )}
+            <figure className="mb-6 rounded-news-lg overflow-hidden shadow-card" itemProp="image">
+              <Image
+                src={displayImageUrl}
+                alt={article.title}
+                width={1200}
+                height={630}
+                className="w-full object-cover"
+                priority
+                sizes="(max-width: 1024px) 100vw, 66vw"
+              />
+            </figure>
 
             {/* Ad – below title */}
             <div className="mb-6">

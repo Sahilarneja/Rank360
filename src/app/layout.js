@@ -1,15 +1,27 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Inter, Merriweather } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import { SITE_NAME, SITE_DESCRIPTION, SITE_URL, buildSiteSchema } from "@/lib/utils";
 
+// Inter — UI font, loaded for all pages
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
   preload: true,
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+// Merriweather — article body font, loaded non-blocking
+const merriweather = Merriweather({
+  subsets: ["latin"],
+  variable: "--font-merriweather",
+  display: "swap",
+  preload: false, // only needed on article pages
+  weight: ["400", "700"],
+  style: ["normal", "italic"],
 });
 
 export const metadata = {
@@ -45,13 +57,13 @@ export const metadata = {
     siteName: SITE_NAME,
     title: `${SITE_NAME} – India's Fastest Education News`,
     description: SITE_DESCRIPTION,
-    images: [{ url: `${SITE_URL}/og-default.jpg`, width: 1200, height: 630, alt: SITE_NAME }],
+    images: [{ url: `${SITE_URL}/opengraph-image`, width: 1200, height: 630, alt: SITE_NAME }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE_NAME} – India's Fastest Education News`,
     description: SITE_DESCRIPTION,
-    images: [`${SITE_URL}/og-default.jpg`],
+    images: [`${SITE_URL}/opengraph-image`],
   },
   alternates: { canonical: SITE_URL },
   verification: {
@@ -71,8 +83,13 @@ export default function RootLayout({ children }) {
   const siteSchema = buildSiteSchema(SITE_URL);
 
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} ${merriweather.variable}`}>
       <head>
+        {/* Preconnect to critical third-party origins */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         {/* Site-level schema: Organization + WebSite + SearchAction */}
         <script
           type="application/ld+json"

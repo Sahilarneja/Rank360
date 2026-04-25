@@ -2,12 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Google Fonts ─────────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap');
+/* Google Fonts loaded via next/font in layout.js — NOT here */
+/* Removing @import to eliminate render-blocking font request */
 
 @layer base {
   :root {
-    --font-inter: "Inter", system-ui, sans-serif;
+    --font-inter: "Inter", system-ui, -apple-system, sans-serif;
     --font-merriweather: "Merriweather", Georgia, serif;
     --header-height: 60px;
   }

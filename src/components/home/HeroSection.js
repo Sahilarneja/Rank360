@@ -1,7 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 import CategoryBadge from "@/components/ui/CategoryBadge";
-import { formatRelativeTime } from "@/lib/utils";
+import { formatRelativeTime, getCategoryMeta } from "@/lib/utils";
 
 export default function HeroSection({ featured, secondary = [] }) {
   if (!featured) return null;
@@ -11,16 +10,20 @@ export default function HeroSection({ featured, secondary = [] }) {
 
       {/* ── Main featured ──────────────────────────────────────── */}
       <article className="lg:col-span-7 group relative rounded-news-lg overflow-hidden bg-gray-900 min-h-[340px] md:min-h-[420px]">
-        {featured.image_url && (
-          <Image
-            src={featured.image_url}
-            alt={featured.title}
-            fill
-            className="object-cover opacity-80 group-hover:opacity-90 group-hover:scale-[1.02] transition-all duration-500"
-            priority
-            sizes="(max-width: 1024px) 100vw, 58vw"
-          />
-        )}
+        {/* Gradient background — replaces image until real images are added */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "linear-gradient(135deg, #1e3a5f 0%, #1D4ED8 50%, #0f2a4a 100%)",
+          }}
+        />
+        {/* Subtle pattern overlay */}
+        <div className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: "radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)",
+            backgroundSize: "60px 60px",
+          }}
+        />
         {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
@@ -67,19 +70,11 @@ export default function HeroSection({ featured, secondary = [] }) {
             className="group flex gap-3 bg-white rounded-news shadow-card hover:shadow-card-hover
                        transition-all duration-200 overflow-hidden p-3"
           >
-            {article.image_url && (
-              <Link href={`/news/${article.slug}`} className="flex-shrink-0 w-[90px] h-[70px] rounded-lg overflow-hidden bg-gray-100">
-                <Image
-                  src={article.image_url}
-                  alt={article.title}
-                  width={90}
-                  height={70}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading={i < 2 ? "eager" : "lazy"}
-                  sizes="90px"
-                />
-              </Link>
-            )}
+            <Link href={`/news/${article.slug}`} className="flex-shrink-0 w-[90px] h-[70px] rounded-lg overflow-hidden bg-gray-100">
+              <div className={`w-full h-full flex items-center justify-center text-xs font-bold ${getCategoryMeta(article.category).color}`}>
+                {getCategoryMeta(article.category).label}
+              </div>
+            </Link>
             <div className="flex-1 min-w-0 flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-1.5 mb-1.5">

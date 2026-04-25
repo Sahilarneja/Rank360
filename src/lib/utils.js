@@ -102,17 +102,28 @@ export function buildSeoMeta(article) {
   };
 }
 
+export function getArticleImageUrl(article, { absolute = false, siteUrl = SITE_URL } = {}) {
+  const raw = article?.image_url;
+
+  if (raw) {
+    if (/^https?:\/\//.test(raw)) return raw;
+    if (raw.startsWith("/")) return absolute ? `${siteUrl}${raw}` : raw;
+  }
+
+  const fallback = article?.slug ? `/news/${article.slug}/image` : "/opengraph-image";
+  return absolute ? `${siteUrl}${fallback}` : fallback;
+}
+
 export function buildJsonLd(article, siteUrl) {
   const catLabel = getCategoryLabel(article.category);
+  const imageUrl = getArticleImageUrl(article, { absolute: true, siteUrl });
 
   const newsArticle = {
     "@context": "https://schema.org",
     "@type": "NewsArticle",
     headline: article.title,
     description: article.summary,
-    image: article.image_url
-      ? [article.image_url]
-      : [`${siteUrl}/og-default.jpg`],
+    image: [imageUrl],
     datePublished: article.published_at,
     dateModified: article.updated_at || article.published_at,
     articleSection: catLabel,
@@ -129,7 +140,7 @@ export function buildJsonLd(article, siteUrl) {
       url: siteUrl,
       logo: {
         "@type": "ImageObject",
-        url: `${siteUrl}/logo.png`,
+        url: `${siteUrl}/apple-icon`,
         width: 200,
         height: 60,
       },
@@ -210,7 +221,7 @@ export function buildSiteSchema(siteUrl) {
       url: siteUrl,
       logo: {
         "@type": "ImageObject",
-        url: `${siteUrl}/logo.png`,
+        url: `${siteUrl}/apple-icon`,
         width: 200,
         height: 60,
       },
